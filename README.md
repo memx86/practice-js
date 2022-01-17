@@ -1,3 +1,3 @@
-#goit-js-hw-00
+#practice-js
 
-JS homework 00 https://memx86.github.io/goit-js-hw-00/
+practice-js https://memx86.github.io/practice-js/
