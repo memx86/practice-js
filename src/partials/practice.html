@@ -1,20 +1,24 @@
 <section class="roulette">
-  <p>Do you want to play a game?</p>
-  <p class="message"></p>
-  <button class="yes" type="button">Yes</button>
-  <button class="no" type="button">No</button>
-  <div class="game is-hidden">
-    <!-- Choose a roulette pocket number from 0 to ${range} -->
-    <p>Choose a roulette pocket number from 0 to <span class="range">5</span></p>
-    <!-- Attempts left: ${3 - i} -->
-    <p>Attempts left: <span class="attempts">3</span></p>
-    <!-- Total prize: ${prize}$ -->
-    <p>Total prize: <span class="prize">0</span></p>
-    <!-- Possible prize on current attempt: ${maxPrize} -->
-    <p>Possible prize on current attempt: <span class="maxPrize">100$</span></p>
-    <form class="choice">
-      <input type="number" name="num" min="0" max="5" />
-      <button type="submit">Try!</button>
-    </form>
+  <div class="roulette__container container">
+    <p class="title">Do you want to play a game?</p>
+    <p class="message"></p>
+    <div class="wrapper">
+      <button class="yes" type="button">Yes</button>
+      <button class="no" type="button">No</button>
+    </div>
+    <div class="game is-hidden">
+      <!-- Choose a roulette pocket number from 0 to ${range} -->
+      <p>Choose a roulette pocket number from 0 to <span class="range">5</span></p>
+      <!-- Attempts left: ${3 - i} -->
+      <p>Attempts left: <span class="attempts">3</span></p>
+      <!-- Total prize: ${prize}$ -->
+      <p>Total prize: <span class="prize">0</span></p>
+      <!-- Possible prize on current attempt: ${maxPrize} -->
+      <p>Possible prize on current attempt: <span class="maxPrize">100$</span></p>
+      <form class="choice">
+        <input class="choice__input" type="number" name="num" min="0" max="5" />
+        <button class="choice__try" type="submit">Try!</button>
+      </form>
+    </div>
   </div>
 </section>

@@ -163,6 +163,7 @@
 
 const refs = {
   game: document.querySelector('.game'),
+  btnWrap: document.querySelector('.wrapper'),
   btnYes: document.querySelector('.yes'),
   btnNo: document.querySelector('.no'),
   form: document.querySelector('.choice'),
@@ -197,9 +198,11 @@ function onNo() {
 }
 function hideGame() {
   refs.game.classList.add('is-hidden');
+  refs.btnWrap.classList.remove('is-hidden');
 }
 function showGame() {
   refs.game.classList.remove('is-hidden');
+  refs.btnWrap.classList.add('is-hidden');
 }
 function onTry(e) {
   e.preventDefault();
