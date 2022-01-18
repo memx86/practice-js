@@ -1,8 +1,8 @@
 parcelRequire=function(e,r,t,n){var i,o="function"==typeof parcelRequire&&parcelRequire,u="function"==typeof require&&require;function f(t,n){if(!r[t]){if(!e[t]){var i="function"==typeof parcelRequire&&parcelRequire;if(!n&&i)return i(t,!0);if(o)return o(t,!0);if(u&&"string"==typeof t)return u(t);var c=new Error("Cannot find module '"+t+"'");throw c.code="MODULE_NOT_FOUND",c}p.resolve=function(r){return e[t][1][r]||r},p.cache={};var l=r[t]=new f.Module(t);e[t][0].call(l.exports,p,l,l.exports,this)}return r[t].exports;function p(e){return f(p.resolve(e))}}f.isParcelRequire=!0,f.Module=function(e){this.id=e,this.bundle=f,this.exports={}},f.modules=e,f.cache=r,f.parent=o,f.register=function(r,t){e[r]=[function(e,r){r.exports=t},{}]};for(var c=0;c<t.length;c++)try{f(t[c])}catch(e){i||(i=e)}if(t.length){var l=f(t[t.length-1]);"object"==typeof exports&&"undefined"!=typeof module?module.exports=l:"function"==typeof define&&define.amd?define(function(){return l}):n&&(this[n]=l)}if(parcelRequire=f,i)throw i;return f}({"clu1":[function(require,module,exports) {
 
-},{}],"yE6p":[function(require,module,exports) {
-const e=Number.parseFloat(prompt("Please enter check number")),t=Number.parseFloat(prompt("Please enter tip amount in %")),o=e*t/100,n=e+o;alert(`Check number: ${e.toFixed(2)}\nTip: ${t.toFixed(2)}%\nTip amount: ${o.toFixed(2)}\nTotal sum to pay:  ${n.toFixed(2)}\n`);
+},{}],"HX5o":[function(require,module,exports) {
+let o=confirm("Do you want to play a game ?");if(o){let t=1,e=0;do{let r=5*t;const a=Math.round(Math.random()*r);let n=!1;for(let o=0;o<3;o+=1){const i=100*t/Math.pow(2,o);if(Number(prompt(`\nChoose a roulette pocket number from 0 to ${r}\nAttempts left: ${3-o}\nTotal prize: ${e}$\nPossible prize on current attempt: ${i}\n`))===a){n=!0,e=+i;break}}n?alert(`Congratulation, you won! Your prize is: ${e}$`):alert(`Thank you for your participation. Your prize is: ${e}$`),o=confirm("Do you want to play again ?"),t=1}while(o);alert(`Thank you for your participation. Your prize is: ${e}$`)}else alert("You did not become a billionaire, but can.");
 },{}],"Focm":[function(require,module,exports) {
-"use strict";require("./sass/main.scss"),require("./js/practice1");
-},{"./sass/main.scss":"clu1","./js/practice1":"yE6p"}]},{},["Focm"], null)
-//# sourceMappingURL=/practice-js/src.32675a85.js.map
+"use strict";require("./sass/main.scss"),require("./js/practice2");
+},{"./sass/main.scss":"clu1","./js/practice2":"HX5o"}]},{},["Focm"], null)
+//# sourceMappingURL=/practice-js/src.ee847c04.js.map
