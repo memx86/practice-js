@@ -1,0 +1,11 @@
+.game {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: all;
+  transition: opacity 250ms linear, visibility 250ms linear;
+  &.is-hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+}
