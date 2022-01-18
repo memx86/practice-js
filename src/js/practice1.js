@@ -1,5 +1,5 @@
-// Check number: 200
-// Tip: 15%
+// Check number: 200    <---user
+// Tip: 15%             <---user
 // Tip amount: 30
 // Total sum to pay:  230
 
