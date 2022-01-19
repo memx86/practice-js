@@ -5,4 +5,4 @@ const e={game:document.querySelector(".game"),btnWrap:document.querySelector(".w
 },{}],"Focm":[function(require,module,exports) {
 "use strict";require("./sass/main.scss"),require("./js/practice2");
 },{"./sass/main.scss":"clu1","./js/practice2":"HX5o"}]},{},["Focm"], null)
-//# sourceMappingURL=/practice-js/src.da7a981e.js.map
+//# sourceMappingURL=/practice-js/src.0fdcd591.js.map
