@@ -89,3 +89,9 @@
 // //   }).length;
 // console.log(countPoints(['3:1', '1:0', '0:0', '1:2', '4:0', '2:3', '1:1', '0:1', '2:1', '1:0']));
 // console.log(countPoints(['1:1', '1:2', '2:0', '4:2', '0:1', '2:3', '1:1', '0:1', '1:1', '3:0']));
+
+//getSums([1, 2, 3, 4, 5]);
+// returns [1, 3, 6, 10, 15];
+// const getSums = arr =>
+//   arr.reduce((acc, el, i) => (acc.length > 0 ? [...acc, acc[i - 1] + el] : [...acc, el]), []);
+// console.log(getSums([1, 2, 3, 4, 5]));
