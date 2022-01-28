@@ -6,4 +6,7 @@ import './js/practice2';
 // import './js/practice5';
 // import './js/practice6';
 // import './js/practice7';
-import './js/practice8';
+// import './js/practice8';
+// import './js/lection8-add';
+// import './js/practice8-add';
+import './js/practice9';
