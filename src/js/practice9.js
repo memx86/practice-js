@@ -94,36 +94,36 @@
 
 // console.log(inventory.items); // ['Knife', 'Medkit']
 
-// const student = {
-//   name: 'Mango',
-//   email: 'mango@mail.com',
-//   hwResults: [
-//     {
-//       topic: 'HTML',
-//       success: true,
-//     },
-//     {
-//       topic: 'CSS',
-//       success: true,
-//     },
-//     {
-//       topic: 'JavaScript',
-//       success: false,
-//     },
-//   ],
-//   getName() {
-//     return this.name;
-//   },
-//   getEmail() {
-//     return this.email;
-//   },
-//   getHwResults() {
-//     return this.hwResults;
-//   },
-//   addHwResult(topic, success) {
-//     this.hwResults.push({ topic, success });
-//   },
-// };
+const student = {
+  name: 'Mango',
+  email: 'mango@mail.com',
+  hwResults: [
+    {
+      topic: 'HTML',
+      success: true,
+    },
+    {
+      topic: 'CSS',
+      success: true,
+    },
+    {
+      topic: 'JavaScript',
+      success: false,
+    },
+  ],
+  getName() {
+    return this.name;
+  },
+  getEmail() {
+    return this.email;
+  },
+  getHwResults() {
+    return this.hwResults;
+  },
+  addHwResult(topic, success) {
+    this.hwResults.push({ topic, success });
+  },
+};
 // console.log('student.getName', student.getName());
 // console.log('student.getEmail', student.getEmail());
 // console.log('student.getHwResults', student.getHwResults());

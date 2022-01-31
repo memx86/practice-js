@@ -9,4 +9,5 @@ import './js/practice2';
 // import './js/practice8';
 // import './js/lection8-add';
 // import './js/practice8-add';
-import './js/practice9';
+// import './js/practice9';
+import './js/practice10';
