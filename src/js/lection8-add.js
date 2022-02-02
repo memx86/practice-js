@@ -34,7 +34,7 @@
 //   }, []);
 // };
 
-//Татьяна
+// альтернативное
 // const chunk = (array, maxSize) => {
 //   if (!maxSize) return array;
 //   return array.reduce(
