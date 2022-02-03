@@ -62,24 +62,24 @@ function onListClick(e) {
   }
 }
 function onDeleteClick(e) {
-  const parent = e.target.parentNode.parentNode;
-  const id = parent.dataset.id;
+  const { id } = getBookFromLi(e.target);
   const newBooks = books.filter(book => book.id !== id);
   renderList(newBooks);
 }
 function onEditClick(e) {
-  const book = getBookFromParentId(e.target.parentNode.parentNode);
+  const { book } = getBookFromLi(e.target);
   const formMarkup = createFormMarkup(book);
   renderRight(formMarkup);
 }
 function onBookClick(e) {
-  const book = getBookFromParentId(e.target.parentNode);
+  const { book } = getBookFromLi(e.target);
   const bookMarkup = createBookMarkup(book);
   renderRight(bookMarkup);
 }
-function getBookFromParentId(parent) {
+function getBookFromLi(el) {
+  const parent = el.closest('li');
   const id = parent.dataset.id;
-  return books.find(book => book.id === id);
+  return { book: books.find(book => book.id === id), id };
 }
 function createBookMarkup({ author, title, img, plot }) {
   return `
