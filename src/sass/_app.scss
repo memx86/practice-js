@@ -60,15 +60,16 @@ img {
 .left {
   padding: 1rem;
   width: 40%;
-  background-color: #ccc;
+  background-color: #eee;
 }
 .right {
   padding: 1rem;
   width: 60%;
-  background-color: #aaa;
+  background-color: #ddd;
 }
 .title {
   margin-bottom: 1.5rem;
+  text-align: center;
 }
 .list {
   margin-bottom: 1rem;
@@ -77,16 +78,24 @@ img {
   gap: 1rem;
 }
 .item {
+  padding: 0.5rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  & p {
-    cursor: pointer;
-    transition: color 250ms linear;
-    &:hover {
-      color: blue;
-    }
+  gap: 0.5rem;
+  border: 1px solid #0080ff;
+  border-radius: 10px;
+}
+.book {
+  cursor: pointer;
+  transition: color 250ms linear;
+  &:hover {
+    color: #0080ff;
   }
+}
+.wrapper {
+  display: flex;
+  gap: 1rem;
 }
 .edit {
   display: grid;

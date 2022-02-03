@@ -2,7 +2,9 @@ import books from './books';
 const refs = {
   root: document.querySelector('#root'),
 };
-
+const state = {
+  books,
+};
 createStructure();
 createList();
 refs.left.append(refs.title, refs.list, refs.addBtn);
@@ -26,19 +28,19 @@ function createStructure() {
   refs.addBtn.classList.add('btn');
 }
 function createList() {
-  renderList(books);
+  renderList(state.books);
   refs.list.addEventListener('click', onListClick);
 }
-function renderList(books) {
+function renderList() {
   refs.list.innerHTML = '';
-  refs.list.insertAdjacentHTML('beforeend', createListMarkup(books));
+  refs.list.insertAdjacentHTML('beforeend', createListMarkup(state.books));
 }
 function createListMarkup(arr) {
   return arr
     .map(
       ({ title, id }) => `<li class='item' data-id='${id}'>
     <p class="book">${title}</p>
-    <div>
+    <div class="wrapper">
     <button class="btn" type='button' data-btn="delete">Delete</button>
     <button class="btn" type='button' data-btn="edit">Edit</button>
     </div>
@@ -63,8 +65,9 @@ function onListClick(e) {
 }
 function onDeleteClick(e) {
   const { id } = getBookFromLi(e.target);
-  const newBooks = books.filter(book => book.id !== id);
-  renderList(newBooks);
+  state.books = state.books.filter(book => book.id !== id);
+  renderList();
+  clearRight();
 }
 function onEditClick(e) {
   const { book } = getBookFromLi(e.target);
