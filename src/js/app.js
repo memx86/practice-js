@@ -161,9 +161,10 @@ function addFormListener() {
 function onFormSubmit(e) {
   e.preventDefault();
   const book = {};
-  for (const el of e.target.elements) {
-    if (el.name) book[el.name] = el.value;
-  }
+  const formData = new FormData(e.target);
+  formData.forEach((value, name) => {
+    book[name] = value;
+  });
   upsertBook(book);
   renderBookPreview(book);
   renderList();
