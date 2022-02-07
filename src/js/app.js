@@ -1,5 +1,9 @@
 import { nanoid } from 'nanoid';
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import books from './books';
+Notify.init({
+  width: '150px',
+});
 const refs = {
   root: document.querySelector('#root'),
 };
@@ -76,6 +80,7 @@ function onDeleteClick(e) {
   state.books = state.books.filter(book => book.id !== id);
   renderList();
   clearRight();
+  Notify.info('Book deleted');
 }
 function onEditClick(e) {
   const book = getBookFromLi(e.target);
@@ -83,8 +88,7 @@ function onEditClick(e) {
 }
 function onBookClick(e) {
   const book = getBookFromLi(e.target);
-  const bookMarkup = createBookMarkup(book);
-  renderRight(bookMarkup);
+  renderBookPreview(book);
 }
 function getBookFromLi(el) {
   const parent = el.closest('li');
@@ -109,6 +113,10 @@ function clearRight() {
 function renderRight(markup) {
   clearRight();
   refs.right.insertAdjacentHTML('beforeend', markup);
+}
+function renderBookPreview(book) {
+  const bookMarkup = createBookMarkup(book);
+  renderRight(bookMarkup);
 }
 function createFormMarkup({ author = '', title = '', img = '', plot = '' }) {
   return `
@@ -147,6 +155,9 @@ function addFormListener() {
   // refs.form.querySelectorAll('input').forEach(el => el.addEventListener('input', onChange));
   state.isFormShown = true;
 }
+// function onChange(e) {
+//   state.newBook[e.target.name] = e.target.value;
+// }
 function onFormSubmit(e) {
   e.preventDefault();
   const book = {};
@@ -154,20 +165,18 @@ function onFormSubmit(e) {
     if (el.name) book[el.name] = el.value;
   }
   upsertBook(book);
-  clearRight();
+  renderBookPreview(book);
   renderList();
 }
 function upsertBook(newBook) {
   const index = state.books.findIndex(book => book.id === state.formId);
   if (index >= 0) {
     state.books[index] = { ...state.books[index], ...newBook };
+    Notify.success('Book updated');
     return;
   }
   newBook.id = state.formId;
   state.books = [...state.books, newBook];
   state.formId = null;
+  Notify.success('Book added');
 }
-
-// function onChange(e) {
-//   state.newBook[e.target.name] = e.target.value;
-// }
