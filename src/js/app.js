@@ -1,9 +1,12 @@
+import { nanoid } from 'nanoid';
 import books from './books';
 const refs = {
   root: document.querySelector('#root'),
 };
 const state = {
   books,
+  isFormShown: false,
+  formId: null,
 };
 createStructure();
 createList();
@@ -26,10 +29,11 @@ function createStructure() {
   refs.addBtn.textContent = 'Add book';
   refs.addBtn.type = 'button';
   refs.addBtn.classList.add('btn');
+  refs.addBtn.dataset.btn = 'add';
 }
 function createList() {
-  renderList(state.books);
-  refs.list.addEventListener('click', onListClick);
+  renderList();
+  refs.left.addEventListener('click', onBookShelfClick);
 }
 function renderList() {
   refs.list.innerHTML = '';
@@ -48,7 +52,7 @@ function createListMarkup(arr) {
     )
     .join('');
 }
-function onListClick(e) {
+function onBookShelfClick(e) {
   if (e.target.classList.contains('book')) {
     onBookClick(e);
     return;
@@ -62,39 +66,44 @@ function onListClick(e) {
     onDeleteClick(e);
     return;
   }
+  if (e.target.dataset.btn === 'add') {
+    renderForm();
+    return;
+  }
 }
 function onDeleteClick(e) {
-  const { id } = getBookFromLi(e.target);
+  const id = getBookFromLi(e.target).id;
   state.books = state.books.filter(book => book.id !== id);
   renderList();
   clearRight();
 }
 function onEditClick(e) {
-  const { book } = getBookFromLi(e.target);
-  const formMarkup = createFormMarkup(book);
-  renderRight(formMarkup);
+  const book = getBookFromLi(e.target);
+  renderForm(book);
 }
 function onBookClick(e) {
-  const { book } = getBookFromLi(e.target);
+  const book = getBookFromLi(e.target);
   const bookMarkup = createBookMarkup(book);
   renderRight(bookMarkup);
 }
 function getBookFromLi(el) {
   const parent = el.closest('li');
   const id = parent.dataset.id;
-  return { book: books.find(book => book.id === id), id };
+  return state.books.find(book => book.id === id);
 }
 function createBookMarkup({ author, title, img, plot }) {
   return `
-<div>
-<h2>${title}</h2>
-<p>${author}</p>
-<img src='${img}' alt='${author}: ${title}' width='200'>
-<p>${plot}</p>
+<div class="book-card">
+<h2 class="book-card__title">${title}</h2>
+<p class="book-card__item book-card__item--author">${author}</p>
+<img class="book-card__img" src='${img}' alt='${author}: ${title}' width='200'>
+<p class="book-card__item book-card__item--plot">${plot}</p>
 </div>
 `;
 }
 function clearRight() {
+  if (state.isFormShown) refs.form.removeEventListener('submit', onFormSubmit);
+  state.isFormShown = false;
   refs.right.innerHTML = '';
 }
 function renderRight(markup) {
@@ -125,3 +134,40 @@ function createFormMarkup({ author = '', title = '', img = '', plot = '' }) {
   <button class="edit__save" type="submit">Save</button>
 </form>`;
 }
+function renderForm(book = {}) {
+  const formMarkup = createFormMarkup(book);
+  state.formId = book.id ?? nanoid();
+  renderRight(formMarkup);
+  addFormListener();
+}
+function addFormListener() {
+  refs.form = refs.right.querySelector('.edit');
+  if (state.isFormShown) return;
+  refs.form.addEventListener('submit', onFormSubmit);
+  // refs.form.querySelectorAll('input').forEach(el => el.addEventListener('input', onChange));
+  state.isFormShown = true;
+}
+function onFormSubmit(e) {
+  e.preventDefault();
+  const book = {};
+  for (const el of e.target.elements) {
+    if (el.name) book[el.name] = el.value;
+  }
+  upsertBook(book);
+  clearRight();
+  renderList();
+}
+function upsertBook(newBook) {
+  const index = state.books.findIndex(book => book.id === state.formId);
+  if (index >= 0) {
+    state.books[index] = { ...state.books[index], ...newBook };
+    return;
+  }
+  newBook.id = state.formId;
+  state.books = [...state.books, newBook];
+  state.formId = null;
+}
+
+// function onChange(e) {
+//   state.newBook[e.target.name] = e.target.value;
+// }
