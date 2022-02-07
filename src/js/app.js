@@ -144,7 +144,7 @@ function createFormMarkup({ author = '', title = '', img = '', plot = '' }) {
 }
 function renderForm(book = {}) {
   const formMarkup = createFormMarkup(book);
-  state.formId = book.id ?? nanoid();
+  state.formId = book.id ? book.id : nanoid();
   renderRight(formMarkup);
   addFormListener();
 }
