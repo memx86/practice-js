@@ -10,10 +10,12 @@ const refs = {
 let state = {
   books,
   isFormShown: false,
+  bookId: null,
   formId: null,
 };
 const getBooks = () => state.books;
 const getIsFormShown = () => state.isFormShown;
+const getBookId = () => state.bookId;
 const getFormId = () => state.formId;
 const ACTION_TYPES = {
   BOOKS: {
@@ -23,7 +25,8 @@ const ACTION_TYPES = {
     UPDATE: 'update',
   },
   FORM_SHOWN: 'formShown',
-  FORM_ID: 'formID',
+  BOOK_ID: 'bookId',
+  FORM_ID: 'formId',
 };
 const LOCAL_STORAGE_BOOKS = 'books';
 rehydrateBooks();
@@ -94,7 +97,10 @@ function onDeleteClick(e) {
   const id = getBookFromLi(e.target).id;
   updateState({ type: ACTION_TYPES.BOOKS.REMOVE, payload: id });
   renderList();
-  clearRight();
+  if (getBookId() == id) {
+    clearRight();
+    updateState({ type: ACTION_TYPES.BOOK_ID, payload: null });
+  }
   Notify.info('Book deleted');
 }
 function onEditClick(e) {
@@ -103,6 +109,7 @@ function onEditClick(e) {
 }
 function onBookClick(e) {
   const book = getBookFromLi(e.target);
+  updateState({ type: ACTION_TYPES.BOOK_ID, payload: book.id });
   renderBookPreview(book);
 }
 function getBookFromLi(el) {
@@ -192,6 +199,7 @@ function upsertBook(newBook) {
   newBook.id = formId;
   updateState({ type: ACTION_TYPES.BOOKS.ADD, payload: newBook });
   updateState({ type: ACTION_TYPES.FORM_ID, payload: null });
+  updateState({ type: ACTION_TYPES.BOOK_ID, payload: formId });
   Notify.success('Book added');
 }
 function parse(str) {
@@ -237,6 +245,10 @@ function updateState({ type, payload }) {
     }
     case ACTION_TYPES.FORM_SHOWN: {
       state = { ...state, isFormShown: payload };
+      return;
+    }
+    case ACTION_TYPES.BOOK_ID: {
+      state = { ...state, bookId: payload };
       return;
     }
     case ACTION_TYPES.FORM_ID: {
