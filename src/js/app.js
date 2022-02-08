@@ -201,8 +201,8 @@ function parse(str) {
     return '';
   }
 }
-function persistBooks(books) {
-  window.localStorage.setItem(LOCAL_STORAGE_BOOKS, JSON.stringify(books));
+function persistBooks() {
+  window.localStorage.setItem(LOCAL_STORAGE_BOOKS, JSON.stringify(getBooks()));
 }
 function rehydrateBooks() {
   const books = parse(window.localStorage.getItem(LOCAL_STORAGE_BOOKS));
@@ -212,22 +212,22 @@ function updateState({ type, payload }) {
   switch (type) {
     case ACTION_TYPES.BOOKS.SET_ALL: {
       state = { ...state, books: payload };
-      persistBooks(state.books);
+      persistBooks();
       return;
     }
     case ACTION_TYPES.BOOKS.ADD: {
       state = { ...state, books: [...state.books, payload] };
-      persistBooks(state.books);
+      persistBooks();
       return;
     }
     case ACTION_TYPES.BOOKS.REMOVE: {
       state = { ...state, books: [...state.books].filter(book => book.id !== payload) };
-      persistBooks(state.books);
+      persistBooks();
       return;
     }
     case ACTION_TYPES.BOOKS.UPDATE: {
       state.books[payload.index] = { ...state.books[payload.index], ...payload.newBook };
-      persistBooks(state.books);
+      persistBooks();
       return;
     }
     case ACTION_TYPES.FORM_SHOWN: {
