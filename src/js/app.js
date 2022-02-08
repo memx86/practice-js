@@ -7,11 +7,26 @@ Notify.init({
 const refs = {
   root: document.querySelector('#root'),
 };
-const state = {
+let state = {
   books,
   isFormShown: false,
   formId: null,
 };
+const getBooks = () => state.books;
+const getIsFormShown = () => state.isFormShown;
+const getFormId = () => state.formId;
+const ACTION_TYPES = {
+  BOOKS: {
+    SET_ALL: 'set all',
+    REMOVE: 'remove',
+    ADD: 'add',
+    UPDATE: 'update',
+  },
+  FORM_SHOWN: 'formShown',
+  FORM_ID: 'formID',
+};
+const LOCAL_STORAGE_BOOKS = 'books';
+rehydrateBooks();
 createStructure();
 createList();
 refs.left.append(refs.title, refs.list, refs.addBtn);
@@ -41,7 +56,7 @@ function createList() {
 }
 function renderList() {
   refs.list.innerHTML = '';
-  refs.list.insertAdjacentHTML('beforeend', createListMarkup(state.books));
+  refs.list.insertAdjacentHTML('beforeend', createListMarkup(getBooks()));
 }
 function createListMarkup(arr) {
   return arr
@@ -77,7 +92,7 @@ function onBookShelfClick(e) {
 }
 function onDeleteClick(e) {
   const id = getBookFromLi(e.target).id;
-  state.books = state.books.filter(book => book.id !== id);
+  updateState({ type: ACTION_TYPES.BOOKS.REMOVE, payload: id });
   renderList();
   clearRight();
   Notify.info('Book deleted');
@@ -93,7 +108,7 @@ function onBookClick(e) {
 function getBookFromLi(el) {
   const parent = el.closest('li');
   const id = parent.dataset.id;
-  return state.books.find(book => book.id === id);
+  return getBooks().find(book => book.id === id);
 }
 function createBookMarkup({ author, title, img, plot }) {
   return `
@@ -106,8 +121,8 @@ function createBookMarkup({ author, title, img, plot }) {
 `;
 }
 function clearRight() {
-  if (state.isFormShown) refs.form.removeEventListener('submit', onFormSubmit);
-  state.isFormShown = false;
+  if (getIsFormShown()) refs.form.removeEventListener('submit', onFormSubmit);
+  updateState({ type: ACTION_TYPES.FORM_SHOWN, payload: false });
   refs.right.innerHTML = '';
 }
 function renderRight(markup) {
@@ -144,20 +159,17 @@ function createFormMarkup({ author = '', title = '', img = '', plot = '' }) {
 }
 function renderForm(book = {}) {
   const formMarkup = createFormMarkup(book);
-  state.formId = book.id ? book.id : nanoid();
+  const formId = book.id ? book.id : nanoid();
+  updateState({ type: ACTION_TYPES.FORM_ID, payload: formId });
   renderRight(formMarkup);
   addFormListener();
 }
 function addFormListener() {
   refs.form = refs.right.querySelector('.edit');
-  if (state.isFormShown) return;
+  if (getIsFormShown()) return;
   refs.form.addEventListener('submit', onFormSubmit);
-  // refs.form.querySelectorAll('input').forEach(el => el.addEventListener('input', onChange));
-  state.isFormShown = true;
+  updateState({ type: ACTION_TYPES.FORM_SHOWN, payload: true });
 }
-// function onChange(e) {
-//   state.newBook[e.target.name] = e.target.value;
-// }
 function onFormSubmit(e) {
   e.preventDefault();
   const book = {};
@@ -170,14 +182,63 @@ function onFormSubmit(e) {
   renderList();
 }
 function upsertBook(newBook) {
-  const index = state.books.findIndex(book => book.id === state.formId);
+  const formId = getFormId();
+  const index = getBooks().findIndex(book => book.id === formId);
   if (index >= 0) {
-    state.books[index] = { ...state.books[index], ...newBook };
+    updateState({ type: ACTION_TYPES.BOOKS.UPDATE, payload: { index, newBook } });
     Notify.success('Book updated');
     return;
   }
-  newBook.id = state.formId;
-  state.books = [...state.books, newBook];
-  state.formId = null;
+  newBook.id = formId;
+  updateState({ type: ACTION_TYPES.BOOKS.ADD, payload: newBook });
+  updateState({ type: ACTION_TYPES.FORM_ID, payload: null });
   Notify.success('Book added');
+}
+function parse(str) {
+  try {
+    return JSON.parse(str);
+  } catch (error) {
+    return '';
+  }
+}
+function persistBooks(books) {
+  window.localStorage.setItem(LOCAL_STORAGE_BOOKS, JSON.stringify(books));
+}
+function rehydrateBooks() {
+  const books = parse(window.localStorage.getItem(LOCAL_STORAGE_BOOKS));
+  updateState({ type: ACTION_TYPES.BOOKS.SET_ALL, payload: books });
+}
+function updateState({ type, payload }) {
+  switch (type) {
+    case ACTION_TYPES.BOOKS.SET_ALL: {
+      state = { ...state, books: payload };
+      persistBooks(state.books);
+      return;
+    }
+    case ACTION_TYPES.BOOKS.ADD: {
+      state = { ...state, books: [...state.books, payload] };
+      persistBooks(state.books);
+      return;
+    }
+    case ACTION_TYPES.BOOKS.REMOVE: {
+      state = { ...state, books: [...state.books].filter(book => book.id !== payload) };
+      persistBooks(state.books);
+      return;
+    }
+    case ACTION_TYPES.BOOKS.UPDATE: {
+      state.books[payload.index] = { ...state.books[payload.index], ...payload.newBook };
+      persistBooks(state.books);
+      return;
+    }
+    case ACTION_TYPES.FORM_SHOWN: {
+      state = { ...state, isFormShown: payload };
+      return;
+    }
+    case ACTION_TYPES.FORM_ID: {
+      state = { ...state, formId: payload };
+      return;
+    }
+    default:
+      return;
+  }
 }
