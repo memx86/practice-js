@@ -198,14 +198,19 @@ function parse(str) {
   try {
     return JSON.parse(str);
   } catch (error) {
-    return '';
+    return null;
   }
 }
 function persistBooks() {
-  window.localStorage.setItem(LOCAL_STORAGE_BOOKS, JSON.stringify(getBooks()));
+  try {
+    window.localStorage.setItem(LOCAL_STORAGE_BOOKS, JSON.stringify(getBooks()));
+  } catch (error) {
+    return null;
+  }
 }
 function rehydrateBooks() {
-  const books = parse(window.localStorage.getItem(LOCAL_STORAGE_BOOKS));
+  const persistedBooks = parse(window.localStorage.getItem(LOCAL_STORAGE_BOOKS));
+  const books = persistedBooks ? persistedBooks : [];
   updateState({ type: ACTION_TYPES.BOOKS.SET_ALL, payload: books });
 }
 function updateState({ type, payload }) {
