@@ -14,4 +14,6 @@ import './sass/main.scss';
 // import './js/practice9';
 // import './js/practice10';
 // import './js/practice11';
-import './js/app';
+// import './js/app';
+// import './js/practice17-timer';
+import './js/practice17';
