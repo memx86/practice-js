@@ -47,9 +47,9 @@ function createMovieCardMarkup({
 }) {
   const BASE_IMG_URL = 'https://www.themoviedb.org/t/p/w600_and_h900_bestv2';
   return `
-    <img src='${BASE_IMG_URL}${poster_path}' alt="${title ?? name}"/>
+    <img src='${BASE_IMG_URL}${poster_path}' alt="${title || name}"/>
     <div>
-    <h2>${title ?? name}</h2>
+    <h2>${title || name}</h2>
     <p>Popularity: ${popularity}</p>
     <p>User rating: ${vote_average || 'no voting yet'}</p>
     <p>Vote count:${vote_count}</p>
