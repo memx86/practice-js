@@ -1,5 +1,4 @@
 import { getTrending, getMovie } from './services/moviesAPI';
-const BASE_IMG_URL = 'https://www.themoviedb.org/t/p/w300_and_h450_bestv2';
 
 const refs = {
   movies: document.querySelector('.movies'),
@@ -13,9 +12,9 @@ function createMarkup({ id, poster_path, title, name, vote_average }) {
   const BASE_IMG_URL = 'https://www.themoviedb.org/t/p/w300_and_h450_bestv2';
   return `
     <li class="movies__item" data-id=${id}>
-    <img class="movies__img" src='${BASE_IMG_URL}${poster_path}' alt="${title ?? name}"/>
+    <img class="movies__img" src='${BASE_IMG_URL}${poster_path}' alt="${title || name}"/>
     <div>
-    <h2>${title ?? name}</h2>
+    <h2>${title || name}</h2>
     <p>User rating: ${vote_average || 'no voting yet'}</p>
     </div>
     </li>
