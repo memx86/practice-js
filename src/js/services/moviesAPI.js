@@ -1,35 +1,69 @@
-const KEY = 'fadfbb72581e18342bb7490adda20bdd';
-const BASE_URL = 'https://api.themoviedb.org/3';
-const SEARCH_MOVIES = `${BASE_URL}/search/movie`;
-const MOVIE = `${BASE_URL}/movie`;
-const TRENDING = `${BASE_URL}/trending`;
-const COMMON = `api_key=${KEY}&language=en-US`;
+class TMDBApi {
+  static #KEY = 'fadfbb72581e18342bb7490adda20bdd';
+  static BASE_URL = 'https://api.themoviedb.org/3';
+  static SEARCH_MOVIES = `${TMDBApi.BASE_URL}/search/movie`;
+  static MOVIE = `${TMDBApi.BASE_URL}/movie`;
+  static TRENDING = `${TMDBApi.BASE_URL}/trending`;
+  static COMMON = `api_key=${TMDBApi.#KEY}&language=en-US`;
+  #page;
 
-function fetchUrl(url) {
-  return fetch(url).then(r => {
-    if (r.ok) return r.json();
-    return Promise.reject(r);
-  });
+  constructor() {
+    this.#page = 1;
+  }
+
+  fetchMovie = url =>
+    fetch(`${url}&page=${this.#page}`)
+      .then(r => {
+        if (r.ok) return r.json();
+        return Promise.reject(r);
+      })
+      .then(r => {
+        this.incrementPage();
+        return r;
+      });
+
+  getMovies = query => {
+    const searchQuery = `?query=${query}`;
+    const url = `${TMDBApi.SEARCH_MOVIES}${searchQuery}&${TMDBApi.COMMON}`;
+    return this.fetchMovie(url).then(r => r.results);
+  };
+
+  getMovie = id => {
+    const url = `${TMDBApi.MOVIE}/${id}?${TMDBApi.COMMON}`;
+    return this.fetchMovie(url);
+  };
+
+  getCast = id => {
+    const url = `${TMDBApi.MOVIE}/${id}/credits?${TMDBApi.COMMON}`;
+    return this.fetchMovie(url).then(r => r.cast);
+  };
+
+  getReviews = id => {
+    const url = `${TMDBApi.MOVIE}/${id}/reviews?${TMDBApi.COMMON}`;
+    return this.fetchMovie(url).then(r => r.results);
+  };
+
+  getTrending = () => {
+    const url = `${TMDBApi.TRENDING}/all/day?${TMDBApi.COMMON}`;
+    return this.fetchMovie(url);
+    // return this.fetchMovie(url).then(r => r.results);
+  };
+
+  resetPage = () => {
+    this.#page = 1;
+  };
+
+  incrementPage = () => {
+    this.#page += 1;
+  };
+
+  get page() {
+    return this.#page;
+  }
+
+  set page(num) {
+    this.#page = num;
+  }
 }
-function getMovies(query) {
-  const searchQuery = `?query=${query}`;
-  const url = `${SEARCH_MOVIES}${searchQuery}&${COMMON}`;
-  return fetchUrl(url).then(r => r.results);
-}
-function getMovie(id) {
-  const url = `${MOVIE}/${id}?${COMMON}`;
-  return fetchUrl(url);
-}
-function getCast(id) {
-  const url = `${MOVIE}/${id}/credits?${COMMON}`;
-  return fetchUrl(url).then(r => r.cast);
-}
-function getReviews(id) {
-  const url = `${MOVIE}/${id}/reviews?${COMMON}`;
-  return fetchUrl(url).then(r => r.results);
-}
-function getTrending() {
-  const url = `${TRENDING}/all/day?${COMMON}`;
-  return fetchUrl(url).then(r => r.results);
-}
-export { fetchUrl, getMovies, getMovie, getCast, getReviews, getTrending };
+
+export { TMDBApi };

@@ -18,4 +18,6 @@ import './sass/main.scss';
 // import './js/practice17-timer';
 // import './js/practice17';
 // import './js/practice18';
-import './js/movies';
+// import './js/movies';
+// import './js/food-service';
+// import './js/practice-assign';

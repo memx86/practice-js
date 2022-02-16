@@ -1,16 +1,58 @@
+%btn {
+  display: flex;
+  padding: 0.5rem;
+  background-color: #0080ff;
+  color: #fff;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: color 250ms linear, background-color 250ms linear, border-color 250ms linear;
+  &:hover,
+  &:focus {
+    outline: none;
+    background-color: transparent;
+    color: #000;
+    border-color: #0080ff;
+  }
+}
+h2 {
+  margin: 0;
+}
 .movies {
   margin-left: auto;
   margin-right: auto;
   list-style: none;
   display: grid;
+  justify-content: center;
+  grid-template-columns: repeat(auto-fill, 300px);
   gap: 1rem;
 }
 .movies__item {
   display: flex;
-  gap: 1rem;
+  flex-direction: column;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 250ms linear;
+  &:hover,
+  &:focus {
+    transform: scale(1.05);
+  }
 }
 .movies__img {
   display: block;
+  width: 300px;
+}
+.movie__bottom {
+  padding: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+}
+.movie__title {
+  text-align: center;
 }
 .backdrop {
   position: fixed;
@@ -33,9 +75,28 @@
   }
 }
 .movie-card {
+  padding: 1rem;
   width: 90%;
   height: 90%;
   display: flex;
   gap: 1rem;
   background-color: #fff;
+  border-radius: 10px;
+}
+.movie__img {
+  border-radius: 10px;
+}
+.load-more {
+  @extend %btn;
+  margin-left: auto;
+  margin-right: auto;
+  opacity: 1;
+  visibility: visible;
+  pointer-events: all;
+  transition: opacity 250ms linear, visibility 250ms linear;
+  &.is-hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
 }
