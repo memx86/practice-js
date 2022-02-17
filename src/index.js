@@ -21,3 +21,4 @@ import './sass/main.scss';
 // import './js/movies';
 // import './js/food-service';
 // import './js/practice-assign';
+import './js/events';
