@@ -5,7 +5,8 @@ const refs = {
   nextBtn: document.querySelector("[data-btn='next']"),
   linkList: document.querySelector('.link-list'),
 };
-// refs.links = refs.linkList.querySelectorAll('.link');
+
+let listFirstPage = 1;
 let totalPages = null;
 
 fetchEvents().then(handleSuccess).catch(handleError);
@@ -21,11 +22,17 @@ function renderList(events = []) {
   const markup = events.map(createMarkup).join('');
   refs.events.insertAdjacentHTML('beforeend', markup);
 }
-function createMarkup({ name, images = [] }) {
+function createMarkup({ name, images = [], dates, url }) {
+  const { url: imageUrl } = images.find(({ ratio, width }) => ratio === '3_2' && width === 305);
   return `
-    <li>
-    <img src="${images[0]?.url}" alt="${name}" width="300" />
-    <p>Title: ${name}</p>
+    <li class="events__item">
+    <a href="${url}">
+    <img src="${imageUrl}" alt="${name}" width="300" />
+    <div>
+    <p>${name}</p>
+    <p>${new Date(dates?.start?.localDate).toLocaleDateString()} ${dates?.start?.localTime}</p>
+    </div>
+    </a>
     </li>
     `;
 }
@@ -35,51 +42,53 @@ function handleError(err) {
 }
 
 function onPrevBtnClick() {
-  refs.nextBtn.disabled = false;
+  if (listFirstPage <= 1) return;
 
+  refs.nextBtn.disabled = false;
   const linksRef = document.querySelectorAll('.link-list .link');
-  const prevPage = Number(linksRef[0].textContent);
+
   if (linksRef.length < 5) {
-    createList(prevPage);
+    createList(listFirstPage, listFirstPage + 5);
+    return;
   }
 
   changeLinksText(-5, linksRef);
-  if (linksRef[0].textContent === '1') {
+  if (listFirstPage === 1) {
     refs.prevBtn.disabled = true;
   }
 }
 function onNextBtnClick() {
+  if (listFirstPage > totalPages) return;
+
   refs.prevBtn.disabled = false;
   const linksRef = document.querySelectorAll('.link-list .link');
-  const lastPage = Number(linksRef[4].textContent);
+  const lastPage = listFirstPage + 4;
   const pages = totalPages - lastPage;
+
   if (pages < 5) {
-    refs.linkList.innerHTML = '';
-    let markup = '';
-    for (let i = lastPage + 1; i <= totalPages; i += 1) {
-      markup += createLinksMarkup(i);
-    }
-    refs.linkList.insertAdjacentHTML('beforeend', markup);
+    createList(lastPage + 1, totalPages + 1);
     refs.nextBtn.disabled = true;
     return;
   }
+
   changeLinksText(5, linksRef);
 }
 
 function changeLinksText(num, refs) {
-  refs.forEach(link => (link.textContent = Number(link.textContent) + num));
+  listFirstPage += num;
+  refs.forEach((link, index) => (link.textContent = listFirstPage + index));
 }
 
-function createList(prevPage) {
+function createList(first, last) {
   refs.linkList.innerHTML = '';
   let markup = '';
-  for (let i = prevPage - 5; i < prevPage; i += 1) {
-    markup += createLinksMarkup(i);
+  for (let i = first; i < last; i += 1) {
+    markup += createLinkMarkup(i);
   }
   refs.linkList.insertAdjacentHTML('beforeend', markup);
 }
 
-function createLinksMarkup(num) {
+function createLinkMarkup(num) {
   return `
     <li class="link-list__item">
       <a class="link" href="">${num}</a>

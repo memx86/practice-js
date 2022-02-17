@@ -2,10 +2,27 @@ ul {
   list-style: none;
   padding-left: 0;
 }
+button {
+  cursor: pointer;
+}
+a {
+  text-decoration: none;
+  color: inherit;
+}
 .events {
   display: grid;
   gap: 1rem;
   grid-template-columns: repeat(auto-fill, 300px);
+  justify-content: center;
+}
+.events__item {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: center;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  overflow: hidden;
 }
 .controls {
   margin: 1rem auto;
