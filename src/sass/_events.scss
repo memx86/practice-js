@@ -20,9 +20,15 @@ a {
   flex-direction: column;
   justify-content: space-between;
   text-align: center;
+}
+.events__link {
   border: 1px solid #ccc;
   border-radius: 10px;
   overflow: hidden;
+  transition: transform 250ms linear;
+  &:hover {
+    transform: scale(1.05);
+  }
 }
 .controls {
   margin: 1rem auto;

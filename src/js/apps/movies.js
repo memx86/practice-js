@@ -1,5 +1,5 @@
 import { Notify } from 'notiflix';
-import { TMDBApi } from './services/moviesAPI';
+import { TMDBApi } from '../services/moviesAPI';
 
 const refs = {
   movies: document.querySelector('.movies'),
