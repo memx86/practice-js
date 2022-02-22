@@ -12,20 +12,15 @@ function outputData(result) {
 }
 
 const [length, ...arr] = getData();
-const number = arr.at(-1);
 const list = arr.slice(0, length);
-function normalize(num) {
-  return num >= 0 ? num : -1 * num;
-}
-function getNearestNumber(list, number) {
-  let result = list[0];
-  list.forEach(element => {
-    let delta = normalize(number - element);
-    let deltaResult = normalize(number - result);
-    result = delta < deltaResult ? element : result;
-  });
+function getResults(arr) {
+  const result = [];
+  for (let i = 1; i < length - 1; i += 1) {
+    const item = arr[i];
+    if (item % 10 === 5 && item > arr[i + 1]) result.push(item);
+  }
   return result;
 }
-
-const result = getNearestNumber(list, number);
+const [bestResult] = getResults(arr).sort((a, b) => b - a);
+const result = list.sort((a, b) => b - a).findIndex(e => e === bestResult) + 1;
 outputData(result);
