@@ -20,11 +20,9 @@ function loadGrain(levels) {
 
   function getGrain(i) {
     const currentHeight = levels.at(i);
-    console.log('currentHeight', currentHeight);
 
     if (result.maxHeight < currentHeight) result.maxHeight = currentHeight;
 
-    console.log('result.maxHeight', result.maxHeight);
     result.grain += result.maxHeight - currentHeight;
   }
 
