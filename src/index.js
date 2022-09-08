@@ -23,4 +23,5 @@ import './sass/main.scss';
 // import './js/apps/events';
 // import './js/training/array-flat-polyfill';
 // import './js/training/findstring';
-import './js/apps/pixabay';
+// import './js/apps/pixabay';
+import './js/training/loadGrain';
