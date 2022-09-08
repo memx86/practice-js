@@ -20,9 +20,11 @@ function loadGrain(levels) {
 
   function getGrain(i) {
     const currentHeight = levels.at(i);
+    console.log('currentHeight', currentHeight);
 
     if (result.maxHeight < currentHeight) result.maxHeight = currentHeight;
 
+    console.log('result.maxHeight', result.maxHeight);
     result.grain += result.maxHeight - currentHeight;
   }
 
@@ -30,6 +32,7 @@ function loadGrain(levels) {
     getGrain(i);
   }
 
+  result.maxHeight = 0;
   for (let i = levels.length - 1; i > highestPointIdx; i -= 1) {
     getGrain(i);
   }
@@ -60,4 +63,8 @@ console.log('-----------------------------------');
 
 console.log('loadGrain([]); // 0');
 console.log(loadGrain([]));
+console.log('-----------------------------------');
+
+console.log('loadGrain([1, 5, 5, 5, 0, 0]); // 0');
+console.log(loadGrain([1, 5, 5, 5, 0, 0]));
 console.log('-----------------------------------');
